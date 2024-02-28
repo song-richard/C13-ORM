@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
       category_name: req.body.category_name,
     });
     res.status(200).json(newCategory);
-    console.log('New category has been created');
+    console.log('New category has been created!');
   } catch (err) {
     res.status(500).json(err);
   };
@@ -53,13 +53,25 @@ router.put('/:id', async (req, res) => {
         },
       });
     res.status(200).send(`${req.params.id} updated!`);
+    res.json(updatedCategory)
     console.log(`${req.params.id} updated!`)
   } catch (err) {
     res.status(500).json(err);
   };});
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
-});
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedCategory = await Category.destroy(
+      {
+        where: {
+          id: req.params.id,
+        },
+      });
+    res.status(200).send(`${req.params.id} has been deleted!`);
+    res.json(deletedCategory)
+    console.log(`${req.params.id} has been deleted!`)
+  } catch (err) {
+    res.status(500).json(err);
+  };});
 
 module.exports = router;
